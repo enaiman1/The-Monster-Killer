@@ -129,7 +129,7 @@ function endRound() {
 
 function attackMonster(mode) {
     const maxDamage = mode === MODE_ATTACK ? ATTACK_VALUE : STRONG_ATTACK_VALUE;
-    constlogEvent = mode === MODE_ATTACK ? LOG_EVENT_PLAYER_HEAL : LOG_EVENT_PLAYER_STRONG_ATTACK;
+    const logEvent = mode === MODE_ATTACK ? LOG_EVENT_PLAYER_HEAL : LOG_EVENT_PLAYER_STRONG_ATTACK;
     // if (mode === MODE_ATTACK) {
     //     maxDamage = ATTACK_VALUE;
     //     logEvent = LOG_EVENT_PLAYER_ATTACK;
@@ -175,7 +175,33 @@ function healPlayerHandler() {
 }
 
 function printLogHandler() {
-    console.log(battleLog);
+    for(let i = 0; i < 3; i++){
+        console.log('--------------')
+    }
+    let j = 0
+    do {
+        console.log(j)
+        j++
+    }
+    while (j < 3);
+
+    //standard for loop
+    /*for (let i = 0; i< battleLog.length; i++){
+        console.log(battleLog[i]);
+    }*/
+
+    //this for-of loop adds to index each move
+    let i = 0
+    for (const logEntry of battleLog){
+        console.log(`#${i}`);
+        // for-in this will have to run before the for of loop fo to the next iteration
+       for(const key in logEntry) {
+        console.log(`${key} => ${logEntry[key]}`);
+        console.log(logEntry[key])
+       }
+       i++
+    }
+    
 }
 
 
