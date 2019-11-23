@@ -12,16 +12,35 @@ const LOG_EVENT_PLAYER_HEAL = 'PLAYER_HEAL';
 const LOG_EVENT_GAME_OVER = 'GAME_OVER';
 
 
-const enterValue = prompt('Maxium life for you and the monster', '100');
-
-let chosenMaxLife = parseInt(enterValue);
 let battleLog = []
+let lastLoggedEntry
 
-if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
-    chosenMaxLife = 100;
+//validation for user max life choice
+function getMaxLifeValues () {
+    // allows user to enter how much life they want to start with 
+const enteredValue = prompt('Maxium life for you and the monster', '100');
+
+// take entered value which is a string and turns it into a number
+const parsedValue = parseInt(enteredValue);
+
+//this condition validates to check if what the user input can be used as a maxium life
+if (isNaN(parsedValue) || parsedValue <= 0) {
+    // if it is not a number we through this message 
+    throw {message: 'Invalid user inoput, not a number!'}
+}
+return parsedValue;
 }
 
-
+let chosenMaxLife
+//for error handling. When user input a wrong value, 
+// it will alert the user of the error and set the max life to a default of 100 
+try{
+ chosenMaxLife = getMaxLifeValues()
+} catch(error) {
+    console.log(error);
+    chosenMaxLife = 100;
+    alert('You entered something wrong, default value of 100 was used. ');
+}
 
 let currentMonsterHealth = chosenMaxLife
 let currentPlayerHealth = chosenMaxLife
@@ -178,9 +197,15 @@ function printLogHandler() {
     for(let i = 0; i < 3; i++){
         console.log('--------------')
     }
-    let j = 0
-    do {
-        console.log(j)
+    let j = 0;
+    outerWhile: do {
+        console.log("outer loop ", j)
+      innerFor:  for (let k = 0; k < 5; k++){
+          if (k === 3) {
+              break outerWhile;
+          }
+            console.log("inner loop ", k)
+        }
         j++
     }
     while (j < 3);
@@ -193,13 +218,18 @@ function printLogHandler() {
     //this for-of loop adds to index each move
     let i = 0
     for (const logEntry of battleLog){
-        console.log(`#${i}`);
-        // for-in this will have to run before the for of loop fo to the next iteration
-       for(const key in logEntry) {
-        console.log(`${key} => ${logEntry[key]}`);
-        console.log(logEntry[key])
-       }
+        if(!lastLoggedEntry && lastLoggedEntry !==0|| lastLoggedEntry < i) {
+            console.log(`#${i}`);
+            // for-in this will have to run before the for of loop fo to the next iteration
+           for(const key in logEntry) {
+            console.log(`${key} => ${logEntry[key]}`);
+            console.log(logEntry[key])
+           }
+           lastLoggedEntry = i
+           break;
+        }
        i++
+       
     }
     
 }
